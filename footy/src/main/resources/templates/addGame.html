@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="modified from Simplicity Itself"/>
+
+    <title>footy</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    </link>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+        footer {
+            font-size: 12px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <!-- See http://twitter.github.com/bootstrap/scaffolding.html#responsive -->
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+    </link>
+</head>
+<body>
+<div th:include="layout :: head"></div>
+
+<div class="container-fluid">
+    <div class="hero-unit span10">
+        <h3>Add a game</h3>
+
+        <form action="#" th:action="@{/addgame}" th:object="${gameInfo}" method="post">
+           <table>
+              <tr>
+                 <td>Opponent:</td>
+                 <td><input type="text" th:field="*{opponent}" /></td>
+                 <td th:if="${#fields.hasErrors('opponent')}" th:errors="*{opponent}">Opponent Error</td>
+              </tr>
+              <tr>
+                 <td>Date:</td>
+                 <td><input type="date" th:field="*{date}" /></td>
+                 <td th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Date Error</td>
+              </tr>
+              <tr>
+                  <td><button type="submit">Submit</button></td>
+              </tr>
+              <tr>
+                 <td th:if="${#fields.hasErrors('global')}" th:errors="*{global}">Incorrect input</td>
+              </tr>
+            </table>
+        </form>
+
+        <a class="btn btn-primary btn-large" href="/">Return home</a>
+    </div>
+</div>
+<div th:include="layout :: foot"></div>
+</body>
+</html>

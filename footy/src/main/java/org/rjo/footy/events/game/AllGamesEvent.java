@@ -1,4 +1,4 @@
-package org.rjo.footy.events.menu;
+package org.rjo.footy.events.game;
 
 import java.util.List;
 

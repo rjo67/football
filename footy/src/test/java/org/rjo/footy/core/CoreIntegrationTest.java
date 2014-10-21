@@ -2,10 +2,10 @@ package org.rjo.footy.core;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.rjo.footy.core.services.GameEventHandler;
+import org.rjo.footy.config.CoreConfig;
+import org.rjo.footy.config.PersistenceConfig;
 import org.rjo.footy.core.services.GameService;
-import org.rjo.footy.events.menu.RequestAllGamesEvent;
-import org.rjo.footy.persistence.GameMemoryRepository;
+import org.rjo.footy.events.game.RequestAllGamesEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -13,9 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-// TODO must be a better way than specifying the class directly ...
-@ContextConfiguration(classes = { GameEventHandler.class,
-		GameMemoryRepository.class })
+@ContextConfiguration(classes = { CoreConfig.class, PersistenceConfig.class })
 public class CoreIntegrationTest {
 
 	@Autowired
