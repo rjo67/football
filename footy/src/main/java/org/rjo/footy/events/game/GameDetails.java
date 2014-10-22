@@ -6,6 +6,9 @@ public class GameDetails {
    private String date;
    private String opponent;
 
+   public GameDetails() {
+   }
+
    public GameDetails(String id, String date, String opponent) {
       this.id = id;
       this.date = date;

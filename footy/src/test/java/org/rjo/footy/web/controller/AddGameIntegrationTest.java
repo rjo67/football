@@ -26,6 +26,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 public class AddGameIntegrationTest {
@@ -33,8 +35,6 @@ public class AddGameIntegrationTest {
    private static final String MATCH_DATE = "2014-10-21";
 
    private static final String OPPONENT = "Lieth";
-
-   private static final String POST_CODE = "90210";
 
    private static final String ADDGAME_VIEW = "/WEB-INF/views/addgame.html";
 
@@ -70,19 +70,16 @@ public class AddGameIntegrationTest {
       mockMvc.perform(get("/addgame")).andExpect(forwardedUrl(ADDGAME_VIEW));
    }
 
-   // @Test
-   // public void thatRedirectsToOrderOnSuccess() throws Exception {
-   // UUID id = UUID.randomUUID();
-   //
-   // when(orderService.createOrder(any(CreateOrderEvent.class))).thenReturn(newOrder(id));
-   //
-   // mockMvc
-   // .perform(
-   // post("/checkout").param("name", CUSTOMER_NAME).param("address1", ADDRESS1)
-   // .param("postcode", POST_CODE)).andExpect(status().isMovedTemporarily())
-   // .andExpect(redirectedUrl("/order/" + id.toString()));
-   // }
-   //
+   @Test
+   public void thatRedirectsToOrderOnSuccess() throws Exception {
+      UUID id = UUID.randomUUID();
+
+      when(gameService.add(any(CreateGameEvent.class))).thenReturn(newGame(id));
+
+      mockMvc.perform(post("/addgame").param("date", MATCH_DATE).param("opponent", OPPONENT))
+            .andExpect(status().isMovedTemporarily()).andExpect(redirectedUrl("/game/" + id.toString()));
+   }
+
    @Test
    public void thatSendsCorrectOrderEventOnSuccess() throws Exception {
       UUID id = UUID.randomUUID();
@@ -91,16 +88,13 @@ public class AddGameIntegrationTest {
 
       mockMvc.perform(post("/addgame").param("date", MATCH_DATE).param("opponent", OPPONENT)).andDo(print());
 
-      //@formatter:off
-        verify(gameService).add(Matchers.<CreateGameEvent>argThat(
-            allOf(
-                org.hamcrest.Matchers.<CreateGameEvent>hasProperty("gameInfo",
-                                                        hasProperty("opponent", equalTo(OPPONENT))),
+      verify(gameService).add(
+            Matchers.<CreateGameEvent> argThat(allOf(
+                  org.hamcrest.Matchers.<CreateGameEvent> hasProperty("gameInfo",
+                        hasProperty("opponent", equalTo(OPPONENT))),
 
-                org.hamcrest.Matchers.<CreateGameEvent>hasProperty("gameInfo",
-                                                        hasProperty("date", equalTo(MATCH_DATE)))
-            )));
-      //@formatter:on
+                  org.hamcrest.Matchers.<CreateGameEvent> hasProperty("gameInfo",
+                        hasProperty("date", equalTo(MATCH_DATE))))));
    }
 
    @Test

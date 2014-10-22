@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Spring binds the 'post' variables to these fields.
+ * 
+ * This object only exists in the web domain.
  *
  */
 public class GameInfo {

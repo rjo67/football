@@ -9,6 +9,7 @@ import org.rjo.footy.events.game.CreateGameEvent;
 import org.rjo.footy.events.game.CreatedGameEvent;
 import org.rjo.footy.events.game.GameDetails;
 import org.rjo.footy.events.game.RequestAllGamesEvent;
+import org.rjo.footy.events.game.RequestGameDetailsEvent;
 import org.rjo.footy.persistence.GameRepository;
 
 public class GameEventHandler implements GameService {
@@ -32,6 +33,12 @@ public class GameEventHandler implements GameService {
 
    @Override
    public CreatedGameEvent add(CreateGameEvent gameCreateEvent) {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   @Override
+   public GameDetails requestGameDetails(RequestGameDetailsEvent gameDetailsEvent) {
       // TODO Auto-generated method stub
       return null;
    }

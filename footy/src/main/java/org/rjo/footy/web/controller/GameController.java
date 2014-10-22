@@ -37,7 +37,7 @@ public class GameController {
 
    @RequestMapping(method = RequestMethod.POST)
    public String addGameSubmit(@Valid @ModelAttribute("gameInfo") GameInfo gameInfo, BindingResult bindingResult) {
-      // should do this with javax.validation
+      // TODO should do this with javax.validation
       try {
          LocalDate.parse(gameInfo.getDate());
       } catch (DateTimeParseException x) {
@@ -60,6 +60,26 @@ public class GameController {
       return "redirect:/game/" + key.toString();
    }
 
+   /**
+    * From the Spring-Doku:
+    * 
+    * The ModelAttribute on the POST method above and this method declares the
+    * GameInfo class to be a Command Object. When the page is rendered for the
+    * first time on a GET /addgame, the method getGameInfo is called to generate
+    * the 'gameInfo' property in the model. This property is then available in
+    * the model for the View to use during rendering.
+    * 
+    * Using GameInfo as a parameter means that Spring will perform Binding of
+    * the request parameters against it. If the binding did not complete
+    * successfully, then the result is stored in the BindingResult parameter.
+    * 
+    * The @Valid annotation on the CustomerInfo indicates to Spring that this
+    * instance should be validated. This will use the annotations on the fields.
+    * If the fields all pass the validation rules, then the bean is deemed to be
+    * valid, if not then it is invalid and the binding will fail.
+    * 
+    * @return a GameInfo for the form
+    */
    @ModelAttribute("gameInfo")
    private GameInfo getGameInfo() {
       return new GameInfo();
