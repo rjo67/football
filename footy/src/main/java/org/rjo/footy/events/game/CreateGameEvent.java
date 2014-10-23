@@ -1,17 +1,20 @@
 package org.rjo.footy.events.game;
 
 import org.rjo.footy.events.CreateEvent;
-import org.rjo.footy.web.domain.GameInfo;
 
+/**
+ * Event to request creating a game.
+ *
+ */
 public class CreateGameEvent extends CreateEvent {
 
-   private GameInfo gameInfo;
+   private GameDetails game;
 
-   public CreateGameEvent(GameInfo gameInfo) {
-      this.gameInfo = gameInfo;
+   public CreateGameEvent(GameDetails gameInfo) {
+      this.game = gameInfo;
    }
 
-   public GameInfo getGameInfo() {
-      return gameInfo;
+   public GameDetails getGame() {
+      return game;
    }
 }

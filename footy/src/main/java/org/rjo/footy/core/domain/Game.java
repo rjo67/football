@@ -4,12 +4,16 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import org.rjo.footy.events.game.GameDetails;
+import org.springframework.beans.BeanUtils;
 
 public class Game {
 
    private UUID id;
    private LocalDate date;
    private String opponent;
+
+   Game() {
+   }
 
    public Game(LocalDate date, String opponent) {
       this.id = UUID.randomUUID();
@@ -38,7 +42,15 @@ public class Game {
    }
 
    public GameDetails toGameDetails() {
-      return new GameDetails(id.toString(), this.getDate().toString(), this.getOpponent());
+      GameDetails gd = new GameDetails();
+      BeanUtils.copyProperties(this, gd);
+      return gd;
+   }
+
+   public static Game fromGameDetails(GameDetails gameInfo) {
+      Game g = new Game();
+      BeanUtils.copyProperties(gameInfo, g);
+      return g;
    }
 
 }

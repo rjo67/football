@@ -11,8 +11,14 @@ public interface GameService {
 
    AllGamesEvent requestAllGames(RequestAllGamesEvent requestAllGamesEvent);
 
+   /**
+    * adds a game.
+    */
    CreatedGameEvent add(CreateGameEvent gameCreateEvent);
 
+   /**
+    * Retrieves game details for a particular game.
+    */
    GameDetails requestGameDetails(RequestGameDetailsEvent gameDetailsEvent);
 
 }

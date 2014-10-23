@@ -15,11 +15,14 @@ import org.rjo.footy.events.game.GameDetails;
 import org.rjo.footy.events.game.RequestAllGamesEvent;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 public class SiteIntegrationTest {
@@ -49,8 +52,15 @@ public class SiteIntegrationTest {
    }
 
    @Test
-   public void thatTextReturned() throws Exception {
-      mockMvc.perform(get("/")).andDo(print()).andExpect(content().string(RESPONSE_BODY));
+   public void thatModelContainsCorrectReturned() throws Exception {
+      mockMvc
+            .perform(get("/"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(
+                  model().attribute("games",
+                        allOf(org.hamcrest.Matchers.<RequestAllGamesEvent> hasProperty("gameDetails", hasSize(2)))));
+      // TODO check contents of list as well...
 
    }
 

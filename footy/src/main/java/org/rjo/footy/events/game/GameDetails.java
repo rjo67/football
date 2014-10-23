@@ -1,6 +1,13 @@
 package org.rjo.footy.events.game;
 
-public class GameDetails {
+import org.rjo.footy.core.domain.Game;
+import org.rjo.footy.events.ReadEvent;
+
+/**
+ * Details of a game.
+ *
+ */
+public class GameDetails extends ReadEvent {
 
    private String id;
    private String date;
@@ -37,6 +44,24 @@ public class GameDetails {
 
    public void setOpponent(String opponent) {
       this.opponent = opponent;
+   }
+
+   public static GameDetails fromGame(Game game) {
+      GameDetails gd = new GameDetails();
+      if (game == null) {
+         gd.entityFound = false;
+      } else {
+         gd.setId(game.getId().toString());
+         gd.setDate(game.getDate().toString());
+         gd.setOpponent(game.getOpponent());
+      }
+      return gd;
+   }
+
+   public static GameDetails notFound(Game game) {
+      GameDetails gd = new GameDetails();
+      gd.entityFound = false;
+      return gd;
    }
 
 }

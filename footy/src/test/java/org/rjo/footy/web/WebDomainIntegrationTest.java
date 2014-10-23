@@ -14,18 +14,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = { WebConfig.class, CoreConfig.class, PersistenceConfig.class })
 public class WebDomainIntegrationTest {
-
-   private static final String LIETH = "Lieth";
-   private static final String HOLM = "Holm";
 
    private MockMvc mockMvc;
 
@@ -38,10 +34,8 @@ public class WebDomainIntegrationTest {
    }
 
    @Test
-   public void thatTextReturned() throws Exception {
-      mockMvc.perform(get("/")).andDo(print()).andExpect(content().string(containsString(LIETH)))
-            .andExpect(content().string(containsString(HOLM)));
-
+   public void thatCorrectModelReturned() throws Exception {
+      mockMvc.perform(get("/")).andDo(print()).andExpect(model().attributeExists("games"));
    }
 
 }

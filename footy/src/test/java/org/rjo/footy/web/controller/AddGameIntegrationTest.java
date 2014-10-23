@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.rjo.footy.core.services.GameService;
 import org.rjo.footy.events.game.CreateGameEvent;
 import org.rjo.footy.events.game.CreatedGameEvent;
-import org.rjo.footy.web.domain.GameInfo;
+import org.rjo.footy.events.game.GameDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -71,7 +71,7 @@ public class AddGameIntegrationTest {
    }
 
    @Test
-   public void thatRedirectsToOrderOnSuccess() throws Exception {
+   public void thatRedirectsToGameOnSuccess() throws Exception {
       UUID id = UUID.randomUUID();
 
       when(gameService.add(any(CreateGameEvent.class))).thenReturn(newGame(id));
@@ -81,7 +81,7 @@ public class AddGameIntegrationTest {
    }
 
    @Test
-   public void thatSendsCorrectOrderEventOnSuccess() throws Exception {
+   public void thatSendsCorrectGameEventOnSuccess() throws Exception {
       UUID id = UUID.randomUUID();
 
       when(gameService.add(any(CreateGameEvent.class))).thenReturn(newGame(id));
@@ -89,12 +89,10 @@ public class AddGameIntegrationTest {
       mockMvc.perform(post("/addgame").param("date", MATCH_DATE).param("opponent", OPPONENT)).andDo(print());
 
       verify(gameService).add(
-            Matchers.<CreateGameEvent> argThat(allOf(
-                  org.hamcrest.Matchers.<CreateGameEvent> hasProperty("gameInfo",
-                        hasProperty("opponent", equalTo(OPPONENT))),
+            Matchers.<CreateGameEvent> argThat(allOf(org.hamcrest.Matchers.<CreateGameEvent> hasProperty("game",
+                  hasProperty("opponent", equalTo(OPPONENT))),
 
-                  org.hamcrest.Matchers.<CreateGameEvent> hasProperty("gameInfo",
-                        hasProperty("date", equalTo(MATCH_DATE))))));
+            org.hamcrest.Matchers.<CreateGameEvent> hasProperty("game", hasProperty("date", equalTo(MATCH_DATE))))));
    }
 
    @Test
@@ -103,9 +101,9 @@ public class AddGameIntegrationTest {
    }
 
    private CreatedGameEvent newGame(UUID id) {
-      GameInfo gi = new GameInfo();
-      gi.setDate(MATCH_DATE);
-      gi.setOpponent(OPPONENT);
-      return new CreatedGameEvent(true, id, gi);
+      GameDetails game = new GameDetails();
+      game.setDate(MATCH_DATE);
+      game.setOpponent(OPPONENT);
+      return new CreatedGameEvent(id, game);
    }
 }

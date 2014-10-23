@@ -33,14 +33,17 @@ public class GameEventHandler implements GameService {
 
    @Override
    public CreatedGameEvent add(CreateGameEvent gameCreateEvent) {
-      // TODO Auto-generated method stub
-      return null;
+      Game game = gameRepository.addGame(Game.fromGameDetails(gameCreateEvent.getGame()));
+      return new CreatedGameEvent(game.getId(), game.toGameDetails());
    }
 
    @Override
    public GameDetails requestGameDetails(RequestGameDetailsEvent gameDetailsEvent) {
-      // TODO Auto-generated method stub
-      return null;
+      Game game = gameRepository.loadGame(gameDetailsEvent.getKey());
+      if (game == null) {
+         return GameDetails.notFound(game);
+      } else {
+         return game.toGameDetails();
+      }
    }
-
 }

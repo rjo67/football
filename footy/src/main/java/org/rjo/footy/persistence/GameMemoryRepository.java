@@ -2,6 +2,7 @@ package org.rjo.footy.persistence;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.rjo.footy.core.domain.Game;
 
@@ -22,5 +23,21 @@ public class GameMemoryRepository implements GameRepository {
    @Override
    public Game[] list() {
       return games.toArray(new Game[games.size()]);
+   }
+
+   @Override
+   public Game loadGame(UUID key) {
+      for (Game game : games) {
+         if (game.getId().equals(key)) {
+            return game;
+         }
+      }
+      return null;
+   }
+
+   @Override
+   public Game addGame(Game game) {
+      games.add(game);
+      return game;
    }
 }
